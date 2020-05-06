@@ -12,6 +12,7 @@ $(document).ready(function () {
         
         //construct a query url (template literal)
         const queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchVal}&appid=${apiKey}&units=imperial`;
+        //First Ajax to get Current Weather
         $.ajax({
             url: queryURL,
             method: "GET",
@@ -23,31 +24,55 @@ $(document).ready(function () {
                 `
                 <h3 class="card-title">${res.name} ${new Date().toLocaleDateString()}</h3>
                     <div class="card">
-                    <div class="card-body">
-                    <h3 class="card-title">${res.name} (${new Date().toLocaleDateString()})
-                    <img src="https://openweathermap.org/img/w/${res.weather[0].icon}.png">
-                    </h3>
-                    <p class="card-text">Temperature: ${res.main.temp} °F</p>
-                    <p class="card-text">Humidity: ${res.main.humidity}%</p>
-                    <p class="card-text">Wind Speed: ${res.wind.speed} MPH</p>
-                    </div>
+                        <div class="card-body">
+                            <h3 class="card-title">${res.name} (${new Date().toLocaleDateString()})
+                                <img src="https://openweathermap.org/img/w/${res.weather[0].icon}.png">
+                            </h3>
+                                 <p class="card-text">Temperature: ${res.main.temp} °F</p>
+                                <p class="card-text">Humidity: ${res.main.humidity}%</p>
+                                <p id="endajax1" class="card-text">Wind Speed: ${res.wind.speed} MPH</p>
+                               
+                        </div>
                     </div>
                     `;
+                    `
+                    <h4 class="card-title"></h4>
+                    `;
+                    //Create Button With city name and prepend to history
                     const recentCityButton = $("<li><button>" + res.name + "</button></li>");
                     $(".history").prepend(recentCityButton).on("click", function () {
                         $("#today").html(currentWeatherHTML);
                     });
+                    
                     $("#today").html(currentWeatherHTML);
+                    //Latitude and Longitude from first ajax
                     var latitude = res.coord.lat;
                     var longitude = res.coord.lon;
-                    const queryUVIndex = `https://api.openweathermap.org/data/2.5/uvi/forecast?&appid=${apiKey}`
+                    const queryUVIndex = `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${latitude}&lon=${longitude}`
+                    //Second Ajax to get UV Index
                     $.ajax({
-                        url: queryUVIndex + "&lat=" + latitude + "&lon=" + longitude,
+                        url: queryUVIndex,
                         method: "GET",
                         dataType: "json",
-                        success: function (res) {
-                            $(`<p class="card-text">Wind Speed: ${latitude} MPH</p>`)
-                            console.log(res)
+                        success: function (uv) {
+                            const uvIndex= uv.value;
+                            $("#card-body").append(`<br><p class="card-text">UV Index: + ${uvIndex}</p>`)
+                            
+                            console.log(uv)
+                            //Third Ajax to get 5 day forecast
+                            $.ajax({
+                                url: queryUVIndex,
+                                method: "GET",
+                                dataType: "json",
+                                success: function (res) {
+                                  
+                                    console.log(res);
+                                    const fiveDayForecast=`
+                                    
+                                    `; 
+                                }
+                            
+                            });
                         }
                     });
                     //clear search input container
