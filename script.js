@@ -87,25 +87,31 @@ $(document).ready(function () {
                             success: function (forecast) {
                                 console.log(forecast);
                                 $('#forecast').empty();
-                                for (i = 7; i < forecast.list.length; i = i + 7) {
-                                    //Set dates on five day forecast
-                                    var day = 1;
-                                    const forecastDates = moment().add(day, 'days').format("MMM Do");
+                                var day = 1;                                    
+                                for (i = 7; i < forecast.list.length; i = i + 7) {                                    
+                                  //Set dates on five day forecast
+                                    console.log("before:")
+                                    console.log(day) 
+                                    const forecastDates = moment().add(day, 'days').format("MMM D");
                                     const fiveDayForecastHtml =
-                                        `
-                                   <div class="forecastCards card-body col-2 shadow bg-primary text-white">
+                                    `
+                                    <div class="forecastCards card-body col-2 shadow bg-primary text-white">
                                     <h3 class="card-title forecastDate">${forecast.city.name} 
-                                        <img src="https://openweathermap.org/img/w/${forecast.list[i].weather[0].icon}.png"/>
+                                    <img src="https://openweathermap.org/img/w/${forecast.list[i].weather[0].icon}.png"/>
                                     </h3>
-                                        <h5>${forecastDates}</h5>
-                                            <p class="card-text">Temperature: ${forecast.list[i].main.temp} °F</p>
-                                            <p class="card-text">Humidity: ${forecast.list[i].main.humidity}%</p>
-                                            <p class="card-text">Wind Speed: ${forecast.list[i].wind.speed} MPH</p>
-                                            <p class="uvDiv card-text">UV Index: ${uvIndex}</p>
-                                   </div>
-                                          `;
+                                    <h5>${forecastDates}</h5>
+                                    <p class="card-text">Temperature: ${forecast.list[i].main.temp} °F</p>
+                                    <p class="card-text">Humidity: ${forecast.list[i].main.humidity}%</p>
+                                    <p class="card-text">Wind Speed: ${forecast.list[i].wind.speed} MPH</p>
+                                    <p class="uvDiv card-text">UV Index: ${uvIndex}</p>
+                                    </div>
+                                    `;
+                                    //increment day by 1 
+                                    day++;
+                                    console.log("after:")
+                                    console.log(day) 
                                     //set uv index color
-                                    $("#forecast").prepend(fiveDayForecastHtml);
+                                    $("#forecast").append(fiveDayForecastHtml);
                                     if (uvIndex < 3) {
                                         $(".uvDiv").addClass("bg-success");
                                     }
@@ -118,8 +124,6 @@ $(document).ready(function () {
                                     else {
                                         $(".uvDiv").addClass("bg-danger");
                                     }
-                                    day++;
-                                    console.log(day)
                                 }
 
                             }
