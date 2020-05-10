@@ -54,71 +54,70 @@ $(document).ready(function () {
                             </div>
                         </div>
                     `;
-                //Make UV Index Color Coded
-                //Create Button With city name and prepend to history
-                history.includes(caseFix) ? '' : history.push(caseFix); // ternay
-                //render buttons looping through them
-                renderBtns();
-                //store local 
-                localStorage.setItem('search-history', JSON.stringify(history));
-                //add to the UI page
-                $("#today").html(currentWeatherHTML);
-                //Latitude and Longitude from first ajax
-                var latitude = res.coord.lat;
-                var longitude = res.coord.lon;
-                const queryUVIndex = `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${latitude}&lon=${longitude}`
-                //Second Ajax to get UV Index
-                $.ajax({
-                    url: queryUVIndex,
-                    method: "GET",
-                    dataType: "json",
-                    success: function (uv) {
-                        const uvIndex = uv.value;
-                        console.log("success! AJax2:")
-                        console.log(uv)
-                        $("#currentWeather").append(`<p class="uvDiv card-text">UV Index: ${uvIndex}</p>`)
-
-                        const fiveDayForecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=imperial`
-                        //Third Ajax to get 5 day forecast
-                        $.ajax({
-                            url: fiveDayForecastUrl,
-                            method: "GET",
-                            dataType: "json",
-                            success: function (forecast) {
-                                console.log(forecast);
-                                $('#forecast').empty();
-                                var day = 1;                                    
-                                for (i = 7; i < forecast.list.length; i = i + 7) {                                    
-                                  //Set dates on five day forecast
-                                    console.log("before:")
-                                    console.log(day) 
-                                    const forecastDates = moment().add(day, 'days').format("MMM D");
-                                    const fiveDayForecastHtml =
-                                    `
-                                    <div class="forecastCards card-body col-2 shadow bg-primary text-white">
-                                    <h3 class="card-title forecastDate">${forecast.city.name} 
-                                    <img src="https://openweathermap.org/img/w/${forecast.list[i].weather[0].icon}.png"/>
-                                    </h3>
-                                    <h5>${forecastDates}</h5>
-                                    <p class="card-text">Temperature: ${forecast.list[i].main.temp} °F</p>
-                                    <p class="card-text">Humidity: ${forecast.list[i].main.humidity}%</p>
-                                    <p class="card-text">Wind Speed: ${forecast.list[i].wind.speed} MPH</p>
-                                    <p class="uvDiv card-text">UV Index: ${uvIndex}</p>
-                                    </div>
-                                    `;
-                                    //increment day by 1 
-                                    day++;
-                                    console.log("after:")
-                                    console.log(day) 
-                                    //set uv index color
-                                    $("#forecast").append(fiveDayForecastHtml);
-                                    if (uvIndex < 3) {
-                                        $(".uvDiv").addClass("bg-success");
-                                    }
-                                    else if (uvIndex > 2 && uvIndex < 6) {
-                                        $(".uvDiv").addClass("bg-warning");
-                                    }
-                                    else if (uvIndex > 5 && uvIndex < 8) {
+                    //Create Button With city name and prepend to history
+                    history.includes(caseFix) ? '' : history.push(caseFix); // ternay
+                    //render buttons looping through them
+                    renderBtns();
+                    //store local 
+                    localStorage.setItem('search-history', JSON.stringify(history));
+                    //add to the UI page
+                    $("#today").html(currentWeatherHTML);
+                    //Latitude and Longitude from first ajax
+                    var latitude = res.coord.lat;
+                    var longitude = res.coord.lon;
+                    const queryUVIndex = `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${latitude}&lon=${longitude}`
+                    //Second Ajax to get UV Index
+                    $.ajax({
+                        url: queryUVIndex,
+                        method: "GET",
+                        dataType: "json",
+                        success: function (uv) {
+                            const uvIndex = uv.value;
+                            console.log("success! AJax2:")
+                            console.log(uv)
+                            $("#currentWeather").append(`<p class="uvDiv card-text">UV Index: ${uvIndex}</p>`)
+                            
+                            const fiveDayForecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=imperial`
+                            //Third Ajax to get 5 day forecast
+                            $.ajax({
+                                url: fiveDayForecastUrl,
+                                method: "GET",
+                                dataType: "json",
+                                success: function (forecast) {
+                                    console.log(forecast);
+                                    $('#forecast').empty();
+                                    var day = 1;                                    
+                                    for (i = 7; i < forecast.list.length; i = i + 7) {                                    
+                                        //Set dates on five day forecast
+                                        console.log("before:")
+                                        console.log(day) 
+                                        const forecastDates = moment().add(day, 'days').format("MMM D");
+                                        const fiveDayForecastHtml =
+                                        `
+                                        <div class="forecastCards card-body col-2 shadow bg-primary text-white">
+                                        <h3 class="card-title forecastDate">${forecast.city.name} 
+                                        <img src="https://openweathermap.org/img/w/${forecast.list[i].weather[0].icon}.png"/>
+                                        </h3>
+                                        <h5>${forecastDates}</h5>
+                                        <p class="card-text">Temperature: ${forecast.list[i].main.temp} °F</p>
+                                        <p class="card-text">Humidity: ${forecast.list[i].main.humidity}%</p>
+                                        <p class="card-text">Wind Speed: ${forecast.list[i].wind.speed} MPH</p>
+                                        <p class="uvDiv card-text">UV Index: ${uvIndex}</p>
+                                        </div>
+                                        `;
+                                        //increment day by 1 
+                                        day++;
+                                        console.log("after:")
+                                        console.log(day) 
+                                        //set uv index color
+                                        $("#forecast").append(fiveDayForecastHtml);
+                                        if (uvIndex < 3) {
+                                            $(".uvDiv").addClass("bg-success");
+                                        }
+                                        else if (uvIndex > 2 && uvIndex < 6) {
+                                            $(".uvDiv").addClass("bg-warning");
+                                        }
+                                        else if (uvIndex > 5 && uvIndex < 8) {
                                         $(".uvDiv").css("background-color", "darkorange");
                                     }
                                     else {
@@ -140,21 +139,5 @@ $(document).ready(function () {
             }
         });
     }
-
-
-
-
-
     //document.ready end  
 });
-
-// var referneces dom
-
-// const - mutable and it takes into considetation of the lexical context
-
-// let - mutable and it takes into considetation of the lexical context
-
-//Api key 180c9f853ac8fcc595fe4080e0abf997
-
-
-//  "http://api.openweathermap.org/data/2.5/forecast?q=" + searchValue "&appid=ketyhere&units=imperial",
