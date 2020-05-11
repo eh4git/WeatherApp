@@ -65,7 +65,7 @@ $(document).ready(function () {
                     //Latitude and Longitude from first ajax
                     var latitude = res.coord.lat;
                     var longitude = res.coord.lon;
-                    const queryUVIndex = `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${latitude}&lon=${longitude}`
+                    const queryUVIndex = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${latitude}&lon=${longitude}`
                     //Second Ajax to get UV Index
                     $.ajax({
                         url: queryUVIndex,
