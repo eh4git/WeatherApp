@@ -1,7 +1,12 @@
 //check to make sure document is loaded, it only loads once
 $(document).ready(function () {
+    function onLoad(){
+
+    }
     //get search history from localstorage
     const history = JSON.parse(localStorage.getItem('search-history')) || [];
+    const historyLastValue = history[history.length - 1];
+    console.log(historyLastValue);
     renderBtns();
     function renderBtns() {
         $(".history").empty();
@@ -149,6 +154,11 @@ $(document).ready(function () {
                 return;
             }
         });
+    }
+    if(history === []) {
+        return false;
+    } else {
+        searchClickHandler(historyLastValue);
     }
     //document.ready end  
 });
