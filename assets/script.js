@@ -23,8 +23,8 @@ $(document).ready(function () {
     const searchClickHandler = function (inputVal) {
 
         //filter user input string format
-        let caseFix = inputVal.split(' ').map(a => {
-            let newWord = a[0].toUpperCase() + a.substring(1, a.length).toLowerCase();
+        let caseFix = inputVal.split(' ').map(letterArr => {
+            let newWord = letterArr[0].toUpperCase() + letterArr.substring(1, letterArr.length).toLowerCase();
             return newWord;
         }).join(' ');
 
@@ -65,6 +65,17 @@ $(document).ready(function () {
                     //Latitude and Longitude from first ajax
                     var latitude = res.coord.lat;
                     var longitude = res.coord.lon;
+                    /*
+                    var coordObj = {
+                        "long": longitude,
+                        "lat": latitude
+                    };
+
+                    return coordObj;
+                    
+                    var coordinates = firstajaxcall(); //return function that is also excutes does something
+                    */
+
                     const queryUVIndex = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${latitude}&lon=${longitude}`
                     //Second Ajax to get UV Index
                     $.ajax({
