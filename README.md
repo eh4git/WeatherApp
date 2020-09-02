@@ -21,6 +21,7 @@ In this application I have created a weather dashboard. The dashboard contains a
 Follow the steps below to install the required node packages.<br>
 All dependencies listed in package.json. In your terminal enter: npm i
 ### Usage
+Deployed link: [WeaterApp](//eh4git.github.io/WeatherApp/)<br>
 Run node index in the CLI and follow prompts. 
 ### Licence
 This project uses the following licence(s):<br>
